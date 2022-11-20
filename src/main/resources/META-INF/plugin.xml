@@ -29,8 +29,11 @@
                 implementationClass="com.kobra.plugin.kobraplugin.KobraFileType"
                 language="Kobra"
                 extensions="kb"/>
+        <lang.syntaxHighlighterFactory key="Kobra"
+                                       implementationClass="com.kobra.plugin.kobraplugin.KobraSyntaxHighlighterFactory"/>
         <lang.parserDefinition
                 language="Kobra"
                 implementationClass="com.kobra.plugin.kobraplugin.KobraParserDefinition"/>
+        <lang.ast.factory language="Kobra" implementationClass="com.kobra.plugin.kobraplugin.KobraASTFactory"/>
     </extensions>
 </idea-plugin>

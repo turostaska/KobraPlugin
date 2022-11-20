@@ -2,6 +2,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.7.10"
     id("org.jetbrains.intellij") version "1.8.0"
+    id("antlr")
 }
 
 group = "com.kobra.plugin"
@@ -12,10 +13,20 @@ repositories {
 }
 
 dependencies {
+    antlr("org.antlr:antlr4:4.11.1")
     implementation("org.antlr:antlr4-intellij-adaptor:0.1")
 }
 
-sourceSets["main"].java.srcDirs("src/main/gen")
+//sourceSets["main"].java.srcDirs("src/main/gen")
+
+configure<SourceSetContainer> {
+    named("main") {
+        withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
+            kotlin.srcDir("src/main/gen")
+            kotlin.srcDir("src/main/kotlin")
+        }
+    }
+}
 
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
@@ -50,4 +61,17 @@ tasks {
     publishPlugin {
         token.set(System.getenv("PUBLISH_TOKEN"))
     }
+
+    generateGrammarSource {
+        arguments.addAll(listOf(
+            "-package", "com.kobra.plugin.kobraplugin",
+        ))
+//        outputDirectory = File("src/main/gen")
+    }
 }
+
+tasks.getByName("runIde").dependsOn("generateGrammarSource")
+
+apply(plugin = "java")
+apply(plugin = "org.jetbrains.intellij")
+apply(plugin = "antlr")
