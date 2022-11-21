@@ -16,7 +16,7 @@ class FunctionSubtree(
     override fun resolve(element: PsiNamedElement): PsiElement? {
         return SymtabUtils.resolve(
             this, KobraLanguage,
-            element, "/program/statements/statement/declaration/functionDeclaration/simpleIdentifier"
+            element, "/program/statements/statement/declaration/functionDeclaration/simpleIdentifier/Identifier"
         )
     }
 }

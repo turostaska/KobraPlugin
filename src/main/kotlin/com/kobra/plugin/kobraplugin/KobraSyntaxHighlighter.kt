@@ -20,7 +20,7 @@ class KobraSyntaxHighlighter : SyntaxHighlighterBase() {
         val attrKey: TextAttributesKey = when (tokenType.antlrTokenType) {
             kobraLexer.Identifier -> ID
             kobraLexer.VAR, kobraLexer.VAL, kobraLexer.FOR, kobraLexer.IF, kobraLexer.ELSE, kobraLexer.RETURN, kobraLexer.FUN, kobraLexer.BooleanLiteral -> KEYWORD
-            kobraLexer.STRING -> STRING
+            kobraLexer.StringLiteral -> STRING
             kobraLexer.LineComment -> LINE_COMMENT
             kobraLexer.DelimitedComment -> BLOCK_COMMENT
             else -> return EMPTY_KEYS

@@ -35,5 +35,12 @@
                 language="Kobra"
                 implementationClass="com.kobra.plugin.kobraplugin.KobraParserDefinition"/>
         <lang.ast.factory language="Kobra" implementationClass="com.kobra.plugin.kobraplugin.KobraASTFactory"/>
+        <colorSettingsPage implementation="com.kobra.plugin.kobraplugin.KobraColorSettingsPage"/>
+        <lang.findUsagesProvider language="Kobra"
+                                 implementationClass="com.kobra.plugin.kobraplugin.KobraFindUsagesProvider"/>
+        <lang.psiStructureViewFactory language="Kobra"
+                                      implementationClass="com.kobra.plugin.kobraplugin.structview.KobraStructureViewFactory"/>
+        <externalAnnotator language="Kobra" implementationClass="com.kobra.plugin.kobraplugin.KobraExternalAnnotator"/>
+
     </extensions>
 </idea-plugin>

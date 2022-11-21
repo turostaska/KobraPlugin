@@ -32,11 +32,11 @@ class KobraPSIFileRoot(
         return if (element.parent is CallSubtree) {
             SymtabUtils.resolve(
                 this, KobraLanguage, element,
-                "/program/statements/statement/declaration/functionDeclaration/simpleIdentifier"
+                "/program/statements/statement/declaration/functionDeclaration/simpleIdentifier/Identifier"
             )
         } else SymtabUtils.resolve(
             this, KobraLanguage, element,
-            "/program/statements/statement/declaration/propertyDeclaration/simpleIdentifier"
+            "/program/statements/statement/declaration/propertyDeclaration/simpleIdentifier/Identifier"
         )
     }
 }
