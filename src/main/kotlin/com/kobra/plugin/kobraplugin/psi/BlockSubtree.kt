@@ -12,7 +12,7 @@ class BlockSubtree(node: ASTNode) : ANTLRPsiNode(node), ScopeNode {
     override fun resolve(element: PsiNamedElement): PsiElement? {
         return SymtabUtils.resolve(
             this, KobraLanguage,
-            element, "/block/statements/statement/declaration/propertyDeclaration/simpleIdentifier"
+            element, "//block/statements/statement/declaration/propertyDeclaration/simpleIdentifier"
         )
     }
 }

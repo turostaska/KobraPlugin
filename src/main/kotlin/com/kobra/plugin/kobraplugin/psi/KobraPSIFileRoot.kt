@@ -12,6 +12,10 @@ import org.antlr.intellij.adaptor.SymtabUtils
 import org.antlr.intellij.adaptor.psi.ScopeNode
 import javax.swing.Icon
 
+private fun PsiElement.isCallSubtree(): Boolean {
+    return if (this is CallSubtree) true else parent?.isCallSubtree() ?: false
+}
+
 class KobraPSIFileRoot(
     viewProvider: FileViewProvider
 ) : PsiFileBase(viewProvider, KobraLanguage), ScopeNode {
@@ -29,14 +33,14 @@ class KobraPSIFileRoot(
     }
 
     override fun resolve(element: PsiNamedElement): PsiElement? {
-        return if (element.parent is CallSubtree) {
+        return if (element.isCallSubtree()) {
             SymtabUtils.resolve(
                 this, KobraLanguage, element,
-                "/program/statements/statement/declaration/functionDeclaration/simpleIdentifier/Identifier"
+                "//functionDeclaration/simpleIdentifier/Identifier"
             )
         } else SymtabUtils.resolve(
             this, KobraLanguage, element,
-            "/program/statements/statement/declaration/propertyDeclaration/simpleIdentifier/Identifier"
+            "//propertyDeclaration/simpleIdentifier/Identifier"
         )
     }
 }

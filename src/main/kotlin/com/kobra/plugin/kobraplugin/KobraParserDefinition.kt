@@ -21,6 +21,30 @@ import org.antlr.intellij.adaptor.psi.ANTLRPsiNode
 import org.antlr.v4.runtime.Parser
 import org.antlr.v4.runtime.tree.ParseTree
 
+val COMMENTS: TokenSet = PSIElementTypeFactory.createTokenSet(
+    KobraLanguage,
+    kobraLexer.LineComment,
+    kobraLexer.DelimitedComment
+)
+
+val WHITESPACE: TokenSet = PSIElementTypeFactory.createTokenSet(
+    KobraLanguage,
+    kobraLexer.WS
+)
+
+val STRING: TokenSet = PSIElementTypeFactory.createTokenSet(
+    KobraLanguage,
+    kobraLexer.STRING
+)
+
+private fun PsiElement?.hasAncestorOrIs(ruleIndex: Int): Boolean {
+    if (this == null) return false
+    val elType = node.elementType as? RuleIElementType ?: return false
+
+    return if (elType.ruleIndex == ruleIndex) true
+    else (parent as? IdentifierPSINode)?.hasAncestorOrIs(ruleIndex) ?: return false
+}
+
 class KobraParserDefinition: ParserDefinition {
     private val FILE = IFileElementType(KobraLanguage)
 
@@ -32,22 +56,6 @@ class KobraParserDefinition: ParserDefinition {
     init {
         PSIElementTypeFactory.defineLanguageIElementTypes(KobraLanguage, kobraParser.tokenNames, kobraParser.ruleNames)
     }
-
-    private val COMMENTS: TokenSet = PSIElementTypeFactory.createTokenSet(
-        KobraLanguage,
-        kobraLexer.LineComment,
-        kobraLexer.DelimitedComment
-    )
-
-    private val WHITESPACE = PSIElementTypeFactory.createTokenSet(
-        KobraLanguage,
-        kobraLexer.WS
-    )
-
-    val STRING = PSIElementTypeFactory.createTokenSet(
-        KobraLanguage,
-        kobraLexer.STRING
-    )
 
     override fun createLexer(project: Project?): Lexer {
         val lexer = kobraLexer(null)
@@ -89,7 +97,7 @@ class KobraParserDefinition: ParserDefinition {
             kobraParser.RULE_propertyDeclaration -> VardefSubtree(node, elType)
             kobraParser.RULE_functionParameter -> ArgdefSubtree(node, elType)
             kobraParser.RULE_block -> BlockSubtree(node)
-            kobraParser.RULE_parenthesizedExpression -> CallSubtree(node)
+            kobraParser.RULE_postfixUnaryExpression -> CallSubtree(node)
             else -> ANTLRPsiNode(node)
         }
     }

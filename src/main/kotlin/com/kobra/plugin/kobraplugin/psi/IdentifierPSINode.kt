@@ -13,6 +13,14 @@ import org.antlr.intellij.adaptor.psi.ANTLRPsiLeafNode
 import org.antlr.intellij.adaptor.psi.Trees
 import org.jetbrains.annotations.NonNls
 
+private fun PsiElement?.hasAncestorOrIs(ruleIndex: Int): Boolean {
+    if (this == null) return false
+    val elType = node.elementType as? RuleIElementType ?: return false
+
+    return if (elType.ruleIndex == ruleIndex) true
+    else parent?.hasAncestorOrIs(ruleIndex) ?: return false
+}
+
 class IdentifierPSINode(
     type: IElementType?,
     text: CharSequence?
@@ -53,16 +61,30 @@ class IdentifierPSINode(
      * as we have parent (context) information.
      */
     override fun getReference(): PsiReference? {
-        val parent = parent
-        val elType = parent.node.elementType
-        // do not return a reference for the ID nodes in a definition
-        if (elType is RuleIElementType) {
-            when (elType.ruleIndex) {
-                kobraParser.RULE_statement, kobraParser.RULE_expression, kobraParser.RULE_primaryExpression
-                    -> return VariableRef(this)
-                kobraParser.RULE_parenthesizedExpression -> return FunctionRef(this)
-            }
+        return when {
+            parent.hasAncestorOrIs(kobraParser.RULE_statement)
+                    || parent.hasAncestorOrIs(kobraParser.RULE_expression)
+                    || parent.hasAncestorOrIs(kobraParser.RULE_primaryExpression)-> VariableRef(this)
+
+            parent.hasAncestorOrIs(kobraParser.RULE_postfixUnaryExpression)
+                    || parent.hasAncestorOrIs(kobraParser.RULE_functionDeclaration) -> FunctionRef(this)
+
+            else -> null
         }
-        return null
+
+//        var currentNode = parent
+//        while (true) {
+//            val elType = currentNode?.parent?.node?.elementType ?: return null
+//
+//            if (elType is RuleIElementType) {
+//                when (elType.ruleIndex) {
+//                    kobraParser.RULE_statement, kobraParser.RULE_expression, kobraParser.RULE_primaryExpression
+//                        -> return VariableRef(this)
+//                    kobraParser.RULE_postfixUnaryExpression, kobraParser.RULE_functionDeclaration -> return FunctionRef(this)
+//                }
+//            }
+//
+//            currentNode = currentNode.parent
+//        }
     }
 }

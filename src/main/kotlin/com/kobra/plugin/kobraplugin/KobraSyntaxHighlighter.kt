@@ -30,16 +30,16 @@ class KobraSyntaxHighlighter : SyntaxHighlighterBase() {
 
     companion object {
         private val EMPTY_KEYS = arrayOfNulls<TextAttributesKey>(0)
-        val ID = TextAttributesKey.createTextAttributesKey("SAMPLE_ID", DefaultLanguageHighlighterColors.IDENTIFIER)
+        val ID = TextAttributesKey.createTextAttributesKey("KOBRA_ID", DefaultLanguageHighlighterColors.IDENTIFIER)
         val KEYWORD =
-            TextAttributesKey.createTextAttributesKey("SAMPLE_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD)
-        val STRING = TextAttributesKey.createTextAttributesKey("SAMPLE_STRING", DefaultLanguageHighlighterColors.STRING)
+            TextAttributesKey.createTextAttributesKey("KOBRA_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD)
+        val STRING = TextAttributesKey.createTextAttributesKey("KOBRA_STRING", DefaultLanguageHighlighterColors.STRING)
         val LINE_COMMENT = TextAttributesKey.createTextAttributesKey(
-            "SAMPLE_LINE_COMMENT",
+            "KOBRA_LINE_COMMENT",
             DefaultLanguageHighlighterColors.LINE_COMMENT
         )
         val BLOCK_COMMENT = TextAttributesKey.createTextAttributesKey(
-            "SAMPLE_BLOCK_COMMENT",
+            "KOBRA_BLOCK_COMMENT",
             DefaultLanguageHighlighterColors.BLOCK_COMMENT
         )
 

@@ -23,8 +23,6 @@ abstract class KobraElementRef(
      */
     @Throws(IncorrectOperationException::class)
     override fun handleElementRename(newElementName: String): PsiElement {
-//		System.out.println(getClass().getSimpleName()+".handleElementRename("+myElement.getName()+"->"+newElementName+
-//			                   ") on "+myElement+" at "+Integer.toHexString(myElement.hashCode()));
         return myElement!!.setName(newElementName)
     }
 
@@ -33,9 +31,6 @@ abstract class KobraElementRef(
      * definition subtree root.
      */
     override fun resolve(): PsiElement? {
-//		System.out.println(getClass().getSimpleName()+
-//		                   ".resolve("+myElement.getName()+
-//		                   " at "+Integer.toHexString(myElement.hashCode())+")");
         val scope = myElement!!.context as ScopeNode? ?: return null
         return scope.resolve(myElement)
     }
@@ -43,7 +38,6 @@ abstract class KobraElementRef(
     override fun isReferenceTo(def: PsiElement): Boolean {
         var def = def
         val refName = myElement!!.name
-        //		System.out.println(getClass().getSimpleName()+".isReferenceTo("+refName+"->"+def.getText()+")");
         // sometimes def comes in pointing to ID node itself. depends on what you click on
         if (def is IdentifierPSINode && isDefSubtree(def.getParent())) {
             def = def.getParent()

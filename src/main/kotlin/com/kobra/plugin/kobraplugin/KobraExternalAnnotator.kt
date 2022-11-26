@@ -4,6 +4,8 @@ import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.ExternalAnnotator
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.util.elementType
+import org.antlr.intellij.adaptor.lexer.RuleIElementType
 import org.antlr.intellij.adaptor.psi.Trees
 import org.antlr.intellij.adaptor.xpath.XPath
 
@@ -24,7 +26,8 @@ class KobraExternalAnnotator :
      */
     override fun doAnnotate(file: PsiFile?): List<Issue> {
         val funcNameNodes = XPath.findAll(KobraLanguage, file, "/program/statements/statement/declaration/functionDeclaration/simpleIdentifier/Identifier")
-        val funcCallNameNodes = XPath.findAll(KobraLanguage, file, "//parenthesizedExpression/expression")
+        val funcCallNameNodes = XPath.findAll(KobraLanguage, file, "//postfixUnaryExpression/primaryExpression/simpleIdentifier/Identifier")
+            .filter { (it?.parent?.parent?.nextSibling?.elementType as? RuleIElementType)?.ruleIndex == kobraParser.RULE_postfixUnarySuffix }
         val funcNames = Trees.toMap(funcNameNodes)
         val funcCalls = Trees.toMap(funcCallNameNodes)
         val issues: MutableList<Issue> = ArrayList()
