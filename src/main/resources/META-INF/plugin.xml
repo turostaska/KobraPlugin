@@ -42,6 +42,11 @@
         <lang.psiStructureViewFactory language="Kobra"
                                       implementationClass="com.kobra.plugin.kobraplugin.structview.KobraStructureViewFactory"/>
         <externalAnnotator language="Kobra" implementationClass="com.kobra.plugin.kobraplugin.KobraExternalAnnotator"/>
-
+        <completion.contributor
+                language="Kobra"
+                implementationClass="com.kobra.plugin.kobraplugin.KobraCompletionContributor"/>
+        <lang.foldingBuilder
+                language="Kobra"
+                implementationClass="com.kobra.plugin.kobraplugin.KobraFoldingBuilder"/>
     </extensions>
 </idea-plugin>
