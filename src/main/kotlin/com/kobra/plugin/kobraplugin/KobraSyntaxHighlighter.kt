@@ -9,6 +9,19 @@ import org.antlr.intellij.adaptor.lexer.ANTLRLexerAdaptor
 import org.antlr.intellij.adaptor.lexer.PSIElementTypeFactory
 import org.antlr.intellij.adaptor.lexer.TokenIElementType
 
+private val KEYWORDS = listOf(
+    kobraLexer.VAR, kobraLexer.VAL,
+    kobraLexer.FOR, kobraLexer.IF, kobraLexer.ELSE, kobraLexer.RETURN, kobraLexer.BREAK, kobraLexer.CONTINUE,
+    kobraLexer.FUN,
+    kobraLexer.CLASS, kobraLexer.THIS, kobraLexer.INTERFACE, kobraLexer.OVERRIDE,
+    kobraLexer.IMPORT, kobraLexer.AS,
+    kobraLexer.USING,
+    kobraLexer.CATCH, kobraLexer.THROW, kobraLexer.FINALLY,
+    kobraLexer.IS,
+    kobraLexer.WHEN,
+    kobraLexer.BooleanLiteral, kobraLexer.NullLiteral,
+)
+
 class KobraSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getHighlightingLexer(): Lexer {
         val lexer = kobraLexer(null)
@@ -17,9 +30,9 @@ class KobraSyntaxHighlighter : SyntaxHighlighterBase() {
 
     override fun getTokenHighlights(tokenType: IElementType): Array<out TextAttributesKey?> {
         if (tokenType !is TokenIElementType) return EMPTY_KEYS
-        val attrKey: TextAttributesKey = when (tokenType.antlrTokenType) {
+        val attrKey: TextAttributesKey = when (val tokenType = tokenType.antlrTokenType) {
             kobraLexer.Identifier -> ID
-            kobraLexer.VAR, kobraLexer.VAL, kobraLexer.FOR, kobraLexer.IF, kobraLexer.ELSE, kobraLexer.RETURN, kobraLexer.FUN, kobraLexer.BooleanLiteral -> KEYWORD
+            in KEYWORDS -> KEYWORD
             kobraLexer.StringLiteral -> STRING
             kobraLexer.LineComment -> LINE_COMMENT
             kobraLexer.DelimitedComment -> BLOCK_COMMENT

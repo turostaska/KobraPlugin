@@ -29,11 +29,23 @@ propertyDeclaration
     ;
 
 functionDeclaration // todo: modifiers
-    : FUN simpleIdentifier functionParameters (COLON NL* type)? functionBody
+    : functionModifiers? FUN simpleIdentifier functionParameters (COLON NL* type)? functionBody
+    ;
+
+functionModifiers
+    : functionModifier+
+    ;
+
+functionModifier
+    : OVERRIDE
     ;
 
 variableDeclaration
     : simpleIdentifier (NL* COLON NL* type)?
+    ;
+
+multiVariableDeclaration
+    : LPAREN NL* variableDeclaration (NL* COMMA NL* variableDeclaration)* (NL* COMMA)? NL* RPAREN
     ;
 
 functionBody
@@ -51,8 +63,20 @@ functionParameter
 
 // SECTION: statements
 
-statement // todo
-    : declaration | assignment | expression
+statement
+    : declaration | assignment | expression | loopStatement | usingStatement
+    ;
+
+loopStatement
+    : forStatement
+    ;
+
+forStatement
+    : FOR NL* LPAREN (variableDeclaration | multiVariableDeclaration) IN expression RPAREN NL* controlStructureBody?
+    ;
+
+usingStatement
+    : USING NL* LPAREN expression RPAREN NL* controlStructureBody?
     ;
 
 assignment
@@ -79,7 +103,14 @@ classBody: LCURL NL* classMemberDeclarations NL* RCURL;
 
 classMemberDeclarations: (classMemberDeclaration NL*)*;
 
-classMemberDeclaration: declaration;
+classMemberDeclaration
+    : declaration
+    | initBlock
+    ;
+
+initBlock
+    : INIT NL* block
+    ;
 
 primaryConstructor
     : CONSTRUCTOR? classParameters
@@ -98,11 +129,11 @@ delegationSpecifiers
     ;
 
 delegationSpecifier
-    : simpleIdentifier constructorInvocation
+    : identifier constructorInvocation?
     ;
 
 constructorInvocation
-    : functionParameters
+    : valueArguments
     ;
 
 // SECTION: expressions
@@ -196,13 +227,14 @@ primaryExpression
     ;
 
 parenthesizedExpression
-    : LPAREN NL* expression NL* RPAREN
+    : LPAREN NL* (expression (NL* COMMA NL* expression)* (NL* COMMA)?)? NL* RPAREN
     ;
 
 literalConstant
     : BooleanLiteral
     | IntegerLiteral
     | NullLiteral
+    | FloatLiteral
     ;
 
 stringLiteral
@@ -369,12 +401,6 @@ type
     : simpleIdentifier QUEST?
     ;
 
-// SECTION: characters
-
-fragment Letter
-    : [a-zA-Z]
-    ;
-
 // SECTION: literals
 
 BooleanLiteral: 'true'| 'false';
@@ -384,6 +410,10 @@ NullLiteral: 'null';
 IntegerLiteral
     : '1'..'9' ('0'..'9')*
     | '0'
+    ;
+
+FloatLiteral
+    : '0'..'9' DOT ('0'..'9')*
     ;
 
 StringLiteral
@@ -403,6 +433,7 @@ TRY: 'try';
 CATCH: 'catch';
 FINALLY: 'finally';
 FOR: 'for';
+USING: 'using';
 RETURN: 'return';
 IS: 'is';
 IN: 'in';
@@ -416,6 +447,7 @@ THROW: 'throw';
 CONTINUE: 'continue';
 BREAK: 'break';
 WHEN: 'when';
+INIT: 'init';
 
 // SECTION: lexicalModifiers
 
@@ -425,6 +457,8 @@ PROTECTED: 'protected';
 
 VAL: 'val';
 VAR: 'var';
+
+OVERRIDE: 'override';
 
 STRING: '"' (~[\r\n"])* '"';
 
@@ -492,9 +526,16 @@ simpleIdentifier
     ;
 
 Identifier
-    : Letter (Letter | [0-9])*
+    : Letter (Letter | [0-9] | '_')*
     | '`' ~([\r\n] | '`')+ '`'
     ;
+
+// SECTION: characters
+
+fragment Letter
+    : [a-zA-Z]
+    ;
+
 
 /** "catch all" rule for any char not matche in a token rule of your
  *  grammar. Lexers in Intellij must return all tokens good and bad.
