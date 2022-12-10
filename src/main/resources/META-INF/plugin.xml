@@ -48,5 +48,7 @@
         <lang.foldingBuilder
                 language="Kobra"
                 implementationClass="com.kobra.plugin.kobraplugin.KobraFoldingBuilder"/>
+<!--        <gotoSymbolContributor-->
+<!--                implementation="com.kobra.plugin.kobraplugin.KobraChooseByNameContributor"/>-->
     </extensions>
 </idea-plugin>
