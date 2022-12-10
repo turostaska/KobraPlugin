@@ -20,6 +20,7 @@ private val KEYWORDS = listOf(
     kobraLexer.IS,
     kobraLexer.WHEN,
     kobraLexer.BooleanLiteral, kobraLexer.NullLiteral,
+    kobraLexer.IN,
 )
 
 class KobraSyntaxHighlighter : SyntaxHighlighterBase() {

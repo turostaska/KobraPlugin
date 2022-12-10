@@ -8,6 +8,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiRecursiveElementVisitor
 import com.kobra.plugin.kobraplugin.psi.BlockSubtree
+import com.kobra.plugin.kobraplugin.psi.ClassBlockSubtree
 
 
 class KobraFoldingBuilder : CustomFoldingBuilder() {
@@ -17,7 +18,7 @@ class KobraFoldingBuilder : CustomFoldingBuilder() {
                                           root: PsiElement, document: Document, quick: Boolean) {
         root.accept(object : PsiRecursiveElementVisitor() {
             override fun visitElement(element: PsiElement) {
-                if (element is BlockSubtree) {
+                if (element is BlockSubtree || element is ClassBlockSubtree) {
                     descriptors.add(FoldingDescriptor(element, element.textRange))
                 }
                 super.visitElement(element)

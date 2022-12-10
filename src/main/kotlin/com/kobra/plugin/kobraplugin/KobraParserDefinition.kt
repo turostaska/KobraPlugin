@@ -97,6 +97,7 @@ class KobraParserDefinition: ParserDefinition {
             kobraParser.RULE_propertyDeclaration -> VardefSubtree(node, elType)
             kobraParser.RULE_functionParameter -> ArgdefSubtree(node, elType)
             kobraParser.RULE_block -> BlockSubtree(node)
+            kobraParser.RULE_classBody -> ClassBlockSubtree(node)
             kobraParser.RULE_postfixUnaryExpression -> CallSubtree(node)
             else -> ANTLRPsiNode(node)
         }
