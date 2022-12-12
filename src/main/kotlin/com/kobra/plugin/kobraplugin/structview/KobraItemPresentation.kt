@@ -9,7 +9,7 @@ open class KobraItemPresentation(
     protected val element: PsiElement
 ) : ItemPresentation {
     override fun getIcon(unused: Boolean): Icon {
-        return KobraIcons.F_ICON
+        return KobraIcons.FILE
     }
 
     override fun getPresentableText(): String? {

@@ -47,8 +47,15 @@ open class KobraStructureViewElement(protected val element: PsiElement) : Struct
                 KobraLanguage,
                 element, "/program/statements/statement/declaration/functionDeclaration/simpleIdentifier/Identifier"
             )
-            val treeElements: MutableList<TreeElement> = ArrayList(funcs.size)
+            val vars = XPath.findAll(
+                KobraLanguage,
+                element, "/program/statements/statement/declaration/propertyDeclaration/simpleIdentifier/Identifier"
+            )
+            val treeElements: MutableList<TreeElement> = mutableListOf()
             for (el in funcs) {
+                treeElements.add(KobraStructureViewElement(el))
+            }
+            for (el in vars) {
                 treeElements.add(KobraStructureViewElement(el))
             }
             return treeElements.toTypedArray()

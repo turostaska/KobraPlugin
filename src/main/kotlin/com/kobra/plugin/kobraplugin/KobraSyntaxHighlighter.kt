@@ -31,7 +31,7 @@ class KobraSyntaxHighlighter : SyntaxHighlighterBase() {
 
     override fun getTokenHighlights(tokenType: IElementType): Array<out TextAttributesKey?> {
         if (tokenType !is TokenIElementType) return EMPTY_KEYS
-        val attrKey: TextAttributesKey = when (val tokenType = tokenType.antlrTokenType) {
+        val attrKey: TextAttributesKey = when (tokenType.antlrTokenType) {
             kobraLexer.Identifier -> ID
             in KEYWORDS -> KEYWORD
             kobraLexer.StringLiteral -> STRING

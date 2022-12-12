@@ -5,6 +5,10 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.util.ProcessingContext
 
+private val completions = listOf(
+    "print",
+    "torch", "transforms", "datasets", "DataLoader", "Tensor",
+)
 
 class KobraCompletionContributor : CompletionContributor() {
     init {
@@ -16,7 +20,9 @@ class KobraCompletionContributor : CompletionContributor() {
                     context: ProcessingContext,
                     resultSet: CompletionResultSet,
                 ) {
-                    resultSet.addElement(LookupElementBuilder.create("print"))
+                    completions.forEach {
+                        resultSet.addElement(LookupElementBuilder.create(it))
+                    }
                 }
             }
         )

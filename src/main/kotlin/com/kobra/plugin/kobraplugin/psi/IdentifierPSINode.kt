@@ -64,27 +64,12 @@ class IdentifierPSINode(
         return when {
             parent.hasAncestorOrIs(kobraParser.RULE_statement)
                     || parent.hasAncestorOrIs(kobraParser.RULE_expression)
-                    || parent.hasAncestorOrIs(kobraParser.RULE_primaryExpression)-> VariableRef(this)
+                    || parent.hasAncestorOrIs(kobraParser.RULE_primaryExpression) -> VariableRef(this)
 
             parent.hasAncestorOrIs(kobraParser.RULE_postfixUnaryExpression)
                     || parent.hasAncestorOrIs(kobraParser.RULE_functionDeclaration) -> FunctionRef(this)
 
             else -> null
         }
-
-//        var currentNode = parent
-//        while (true) {
-//            val elType = currentNode?.parent?.node?.elementType ?: return null
-//
-//            if (elType is RuleIElementType) {
-//                when (elType.ruleIndex) {
-//                    kobraParser.RULE_statement, kobraParser.RULE_expression, kobraParser.RULE_primaryExpression
-//                        -> return VariableRef(this)
-//                    kobraParser.RULE_postfixUnaryExpression, kobraParser.RULE_functionDeclaration -> return FunctionRef(this)
-//                }
-//            }
-//
-//            currentNode = currentNode.parent
-//        }
     }
 }
